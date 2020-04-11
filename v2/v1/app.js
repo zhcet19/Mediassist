@@ -12,7 +12,7 @@ var Hospital =require("./models/hospital");
 var seedDB = require("./seeds");
 var Comment = require("./models/comment");
 var User= require("./models/user")
-mongoose.connect('mongodb://localhost:27017/hospital', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/yelp_camp', {useNewUrlParser: true, useUnifiedTopology: true});
 app.use(express.static(__dirname +"/public"));
 //seedDB();
 app.use(require("express-session")(
