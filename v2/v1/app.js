@@ -8,7 +8,7 @@ var passport= require("passport")
 var passportLocalMongoose= require("passport-local-mongoose")
 app.use(bodyparser.urlencoded({extended:true}));
 app.set("view engine","ejs");
-var Campground =require("./models/campgrounds"); 
+var Hospital =require("./models/hospital"); 
 var seedDB = require("./seeds");
 var Comment = require("./models/comment");
 var User= require("./models/user")
@@ -39,9 +39,9 @@ app.get("/",function(req,res){
 	res.render("landing");
 });
 
-app.get("/campground",function(req,res){
+app.get("/hospital",function(req,res){
 	
-	Campground.find({},function(err,allCampgrounds){
+	Hospital.find({},function(err,allHospitals){
 		if(err)
 			{
 				console.log(err);
@@ -49,19 +49,16 @@ app.get("/campground",function(req,res){
 			}
 		else
 			{
-				res.render("campgrounds/index",{campground:allCampgrounds,currentUser:req.user});
+				res.render("hospital/index",{hospital:allHospitals,currentUser:req.user});
 			}
 	});
 });
-	
-	
-	
-	app.post("/campground",function(req,res){
+	app.post("/hospital",function(req,res){
 	var name=req.body.name;
 	var image=req.body.image;
 	var desc=req.body.description;	
-	var newCampground={name:name,image:image,description:desc};
-Campground.create(newCampground,function(err,newlyCreated)
+	var newHospital={name:name,image:image,description:desc};
+Hospital.create(newHospital,function(err,newlyCreated)
 					 {
 		if(err)
 			{
@@ -69,16 +66,17 @@ Campground.create(newCampground,function(err,newlyCreated)
 			}
 		else
 			{
-				res.redirect("/campground");
+				res.redirect("/hospital");
 			}
 	});
 	});
-app.get("/campground/new",function(req,res){
-	   res.render("campgrounds/new");
+app.get("/hospital/new",function(req,res){
+	res.render("hospital/new");
 });
-
-app.get("/campground/:id",function(req,res){
-	Campground.findById(req.params.id).populate("comments").exec(function(err,foundCampground)
+	
+	
+app.get("/hospital/:id",function(req,res){
+	Hospital.findById(req.params.id).populate("comments").exec(function(err,foundhospital)
 						{
 		if(err)
 			{
@@ -87,16 +85,16 @@ app.get("/campground/:id",function(req,res){
 		else
 	{  
 		
-		console.log(foundCampground)
-		res.render("campgrounds/show",{campground:foundCampground});
+		console.log(foundhospital)
+		res.render("hospital/show",{hospital:foundhospital});
 	}
 
 	});
 
 
 });
-app.get("/campground/:id/comments/new",isLoggedIn,function(req,res){
-	Campground.findById(req.params.id,function(err,campground)
+app.get("/hospital/:id/comments/new",isLoggedIn,function(req,res){
+		Hospital.findById(req.params.id,function(err,hospital)  
 						{
 		if(err)
 			{
@@ -106,19 +104,19 @@ app.get("/campground/:id/comments/new",isLoggedIn,function(req,res){
 	{  
 		
 		
-		res.render("comments/new",{campground:campground});
+		res.render("comments/new",{hospital:hospital});
 	}
 	
 	
 });
 });
-app.post("/campground/:id/comments",function(req,res){
-	Campground.findById(req.params.id,function(err,campground)
+app.post("/hospital/:id/comments",function(req,res){
+	Hospital.findById(req.params.id,function(err,hospital)
 			{
 		if(err)
 			{
 				console.log(err);
-				res.redirect("/campground");
+				res.redirect("/hospital");
 			}
 		else
 			{
@@ -129,9 +127,9 @@ app.post("/campground/:id/comments",function(req,res){
 							console.log(err);
 						}
 					else{
-						campground.comments.push(comment);
-						campground.save();
-						res.redirect("/campground/" + campground._id);
+						hospital.comments.push(comment);
+						hospital.save();
+						res.redirect("/hospital/" + hospital._id);
 					}
 							   
 							   
@@ -156,7 +154,7 @@ app.post("/register",function(req,res){
 				return res.render("register");
 		}
 	passport.authenticate("local")(req,res,function(){
-			res.redirect("/campground");
+			res.redirect("/hospital");
 		});
 	});
 });
@@ -165,13 +163,13 @@ app.get("/login",function(req,res){
 	res.render("login");
 })
 app.post("/login",passport.authenticate("local",{
-		successRedirect:"/campground",
+		successRedirect:"/hospital",
 		failureRedirect:"/login"
 }),function(req,res){});
 app.get("/logout",function(req,res)
 	   {
 	req.logout();
-	res.redirect("/campground");
+	res.redirect("/hospital");
 });
 function isLoggedIn(req,res,next){
 	if(req.isAuthenticated())
