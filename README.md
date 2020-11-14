@@ -6,12 +6,12 @@ it is a project made by me for Hackamu 2
 
 ## Preview
 1) Landing page
-![alt text](https://github.com/zhcet19/Rolling-Ball-3-D-game/blob/master/s1.png)
+![alt text](https://github.com/zhcet19/Mediassist/blob/master/pic1.png)
 
 
 
 2)Hospital info page
-
+![alt text](https://github.com/zhcet19/Mediassist/blob/master/pic2.png)
 
 
 
@@ -19,3 +19,4 @@ it is a project made by me for Hackamu 2
 
 
 3)Review and description page
+![alt text](https://github.com/zhcet19/Mediassist/blob/master/s3.png)
